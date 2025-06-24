@@ -9,7 +9,7 @@ if(isset($_POST['submit'])) {
   $password = md5(($_POST['password']));
   if($email != "" && $password != "") {
     try {
-      $query = "select id, fname, lname, email, mobile, password, address, create_date from tbluser where email=:email and password=:password";
+      $query = "select id, name, email, mobile, password, create_date from tbladmin where email=:email and password=:password";
       $stmt = $dbh->prepare($query);
       $stmt->bindParam('email', $email, PDO::PARAM_STR);
       $stmt->bindValue('password', $password, PDO::PARAM_STR);
@@ -18,7 +18,7 @@ if(isset($_POST['submit'])) {
       $row   = $stmt->fetch(PDO::FETCH_ASSOC);
       if($count == 1 && !empty($row)) {
         /******************** Your code ***********************/
-        $_SESSION['uid']   = $row['id'];
+        $_SESSION['adminid']   = $row['id'];
         $_SESSION['email'] = $row['email'];
         $_SESSION['name'] = $row['fname'];
        header("location: index.php");
@@ -34,115 +34,79 @@ if(isset($_POST['submit'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="zxx">
-<head>
-	<title>Gym Management System</title>
-	<meta charset="UTF-8">
-	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/nice-select.css"/>
-	<link rel="stylesheet" href="css/magnific-popup.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/animate.css"/>
-
-	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
-
-</head>
-<body>
-	<!-- Page Preloder -->
-	
-
-	<!-- Header Section -->
-	<?php include 'include/header.php';?>
-	<!-- Header Section end -->
-
-	                                                                              
-	<!-- Page top Section -->
-	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-7 m-auto text-white">
-					<h2>Login</h2>
-					
-				</div>
-			</div>
-		</div>
-	</section>
-
-
-
-	<!-- Pricing Section -->
-	<section class="pricing-section spad">
-		<div class="container">
-			
-			<div class="row">
-				<div class="col-lg-3 col-sm-6">
-					
-				</div>
-				<div class="col-lg-6 col-sm-6">
-					<div class="pricing-item entermediate">
-						<div class="pi-top">
-
-						</div>
-						<div class="pi-price">
-							<h3>User</h3>
-							<p>Login</p>
-						</div>
-						 <?php if($error){?><div class="errorWrap" style="color:red;"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>GYM MS | Admin login</title>
+  </head>
+  <body>
+    <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
+    <section class="login-content">
+      <div class="logo">
+        <h1>GYM MS | Admin login</h1>
+      </div>
+      <div class="login-box">
+        <form class="login-form" method="post">
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+           <?php if($error){?><div class="errorWrap" style="color:red;"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
                 else if($msg){?><div class="succWrap" style="color:red;"><strong>Error</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
-
-						<form class="singup-form contact-form" method="post">
-						<div class="row">
-							<div class="col-md-12">
-								<input type="email" name="email" id="email" placeholder="Your Email" autocomplete="off" required>
-							</div>
-							<div class="col-md-12">
-								<input type="password" name="password" id="password" placeholder="Password" autocomplete="off" required>
-							</div>
-							
-							
-						</div>
-						<div class="row">
-					<div class="col-md-6">
-					<input type="submit" id="submit" name="submit" value="Login" class="site-btn sb-gradient">
-					</div>
-<div class="col-md-6">
-	
-<a href="registration.php" class="site-btn sb-gradient">Registration</a>
-					</div>
-				</div>
-	
-</form>
-					</div>
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					
-				</div>
-				
-			</div>
-		</div>
-	</section>
-	
-
-	<?php include 'include/footer.php'; ?>
-	<!-- Footer Section end -->
-
-	<div class="back-to-top"><img src="img/icons/up-arrow.png" alt=""></div>
-
-	<!-- Search model end -->
-
-	<!--====== Javascripts & Jquery ======-->
-	<script src="js/vendor/jquery-3.2.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.slicknav.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.nice-select.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/main.js"></script>
-
-	</body>
+          <div class="form-group">
+            <label class="control-label">Emai </label>
+            <input class="form-control" name="email" id="email" type="text" placeholder="Email" autofocus>
+          </div>
+          <div class="form-group">
+            <label class="control-label">PASSWORD</label>
+            <input class="form-control" name="password" id="password" type="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <div class="utility">
+      
+  <!--             <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p> -->
+            </div>
+          </div>
+          <div class="form-group btn-container">
+           
+            <input type="submit" name="submit" id="submit" value="SIGN IN" class="btn btn-primary btn-block">
+          </div>
+          <hr />
+          <a href="../index.php">Back to Home Page</a>
+        </form>
+        <form class="forget-form" action="index.html">
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
+          <div class="form-group">
+            <label class="control-label">EMAIL</label>
+            <input class="form-control" type="text" placeholder="Email">
+          </div>
+          <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+          </div>
+          <div class="form-group mt-3">
+            <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script type="text/javascript">
+      // Login Page Flipbox control
+      $('.login-content [data-toggle="flip"]').click(function() {
+      	$('.login-box').toggleClass('flipped');
+      	return false;
+      });
+    </script>
+  </body>
 </html>
